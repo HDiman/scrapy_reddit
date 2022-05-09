@@ -1,5 +1,6 @@
 import scrapy
 from reddit.items import RedditItem
+from scrapy.http.request import Request
 
 class RedditJobSpider(scrapy.Spider):
     name = "reddit_job"
@@ -10,6 +11,7 @@ class RedditJobSpider(scrapy.Spider):
 
     # how to extract to data
     def parse(self, response):
+
         titles = response.css('h3._eYtD2XCVieq6emjKBH3m ::text').extract()
         hrefs = response.css('a.SQnoC3ObvgnGjWt90zD9Z ::attr(href)').extract()
         scores = response.css('._1rZYMD_4xY3gRcSS3p8ODO._3a2ZHWaih05DgAOtvu6cIo ::text').extract()
@@ -22,9 +24,13 @@ class RedditJobSpider(scrapy.Spider):
 
             yield new_item
 
+        # next_page = response.css('span.next-button').css('a::attr["href"]').extract()[0]
+        # yield Request(url=next_page, callback=self.parse)
+
+
 
 # Write to csv file
-#  scrapy crawl reddit_job -o out_file.csv -t csv
+#  scrapy crawl reddit_job -o out_file3.csv -t csv
 
 
 
